@@ -16,13 +16,12 @@ public class Topology {
 	public static void main(String[] args) {
 		Config config = new Config();
 		config.setMessageTimeoutSecs(120);
-
 		TopologyBuilder b = new TopologyBuilder();
 		b.setSpout("TwitterClassifierSpout", new TwitterClassifierSpout());
 		b.setBolt("DownloadImageBolt", new DownloadImageBolt()).shuffleGrouping("TwitterClassifierSpout");
 		b.setBolt("ResizeImageBolt", new ResizeImageBolt()).shuffleGrouping("DownloadImageBolt");
 		b.setBolt("SaveImageBolt", new SaveImageBolt()).shuffleGrouping("ResizeImageBolt");
-        b.setBolt("ClassifyBolt", new ClassifyBolt()).shuffleGrouping("SaveImageBolt");
+		b.setBolt("ClassifyBolt", new ClassifyBolt()).shuffleGrouping("SaveImageBolt");
 		b.setBolt("TwitterReplyBolt", new TwitterReplyBolt()).shuffleGrouping("ClassifyBolt");
 		b.setBolt("HBaseBolt", new HBaseBolt()).shuffleGrouping("TwitterReplyBolt");
 
@@ -36,7 +35,5 @@ public class Topology {
 				cluster.shutdown();
 			}
 		});
-
 	}
-
 }
