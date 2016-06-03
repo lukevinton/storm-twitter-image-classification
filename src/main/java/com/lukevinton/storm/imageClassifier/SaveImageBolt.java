@@ -30,7 +30,7 @@ public class SaveImageBolt extends BaseRichBolt {
         Status tweet = (Status) input.getValueByField("tweet");
         BufferedImage img = (BufferedImage) input.getValueByField("imgResized");
         String fileName = "classify" + System.currentTimeMillis() + ".jpg";
-        String fileLocation = "C:\\temp\\" + fileName;
+        String fileLocation = System.getProperty("localTemp")+ fileName;
         File imgFile = new File(fileLocation);
         byte[] imgBytes = null;
         try {

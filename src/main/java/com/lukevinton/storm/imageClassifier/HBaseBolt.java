@@ -55,8 +55,8 @@ public class HBaseBolt extends BaseRichBolt {
     private Configuration getHBaseConfiguration()
     {
         Configuration conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.property.clientPort", "2181");
-        conf.set("hbase.zookeeper.quorum", "sandbox.hortonworks.com");
+        conf.set("hbase.zookeeper.property.clientPort", System.getProperty("zookeeperPort"));
+        conf.set("hbase.zookeeper.quorum", System.getProperty("zookeeper"));
         conf.set("zookeeper.znode.parent", "/hbase-unsecure");
         return conf;
     }

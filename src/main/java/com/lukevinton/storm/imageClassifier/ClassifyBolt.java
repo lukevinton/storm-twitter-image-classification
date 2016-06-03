@@ -35,7 +35,7 @@ public class ClassifyBolt extends BaseRichBolt {
         Status tweet = (Status) input.getValueByField("tweet");
         String imgLocation = (String) input.getValueByField("imgFileLocation");
         String fileName = (String) input.getValueByField("imgFileName");
-        String remoteFileName = "/tmp/"+fileName;
+        String remoteFileName = System.getProperty("remoteTemp") + fileName;
         SSHClient ssh = new SSHClient();
         String classifications = "";
 
@@ -63,7 +63,7 @@ public class ClassifyBolt extends BaseRichBolt {
         }
         try {
             ssh.authPassword(System.getProperty("tfuser"),System.getProperty("tfpassword"));
-            ssh.newSCPFileTransfer().upload(new FileSystemFile(imgLocation), "/tmp/");
+            ssh.newSCPFileTransfer().upload(new FileSystemFile(imgLocation), System.getProperty("remoteTemp"));
             final Session session = ssh.startSession();
             String command = "python /tensorflow/tensorflow/models/image/imagenet/classify_image.py --image " + remoteFileName;
             final Session.Command cmd = session.exec(command);
